@@ -180,11 +180,6 @@ public class AutoGeneratePOJO {
 	}
 	/*
 	 * 返回字段描述信息,组装到fieldInfoList中
-	 * go
-execute sp_addextendedproperty 'MS_Description',   '主键id',   'SCHEMA', 'dbo', 'table', 't_ic_casebill_damage_types', 'column', 'id'
-GO
-execute sp_addextendedproperty 'MS_Description',   '受损名称',   'SCHEMA', 'dbo', 'table', 't_ic_casebill_damage_types', 'column', 'dm_type_name'
-
 	 */
 	public static void getFieldDesc(String[] fieldDesces, List<FieldInfo> fieldInfoList) {
 		//循环处理每个GO语句
