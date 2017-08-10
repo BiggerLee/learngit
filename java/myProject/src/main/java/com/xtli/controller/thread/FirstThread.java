@@ -45,6 +45,7 @@ public class FirstThread extends Thread
 			// 因此可以直接调用getName()方法返回当前线程的名
 
 			System.out.println(getName() +  " " + i);
+			this.suspend();
 
 		}
 

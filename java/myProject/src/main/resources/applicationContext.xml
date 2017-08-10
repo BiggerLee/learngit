@@ -1,0 +1,63 @@
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="  
+        http://www.springframework.org/schema/beans       
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+        http://www.springframework.org/schema/context   
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+        http://www.springframework.org/schema/mvc  
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+        >
+    <!-- 启动@aspectj的自动代理支持-->
+    <aop:aspectj-autoproxy />
+    <!-- 已经使用注解，可以省略此配置。加上此配置后是不是执行了两次AOP？？？ -->
+    <!-- 定义aspect类 -->
+    <!-- <bean name="myAspectJ" class="com.xtli.dao.MyAspect"/>  -->
+    
+    <!-- <context:component-scan base-package="com.xtli.controller">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>  -->
+    <!-- spring-mvc-servlet.xml中已经配置无需再配置？ -->
+    <!-- <context:component-scan base-package="com.xtli"/> -->
+    
+    <!-- datasource define -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:comp/env/jdbc/sqlServerMydb</value>
+		</property>
+	</bean> 
+	
+	<!--MyBatis 的sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:sqlMapConfig.xml"></property>
+	</bean>
+	<!-- sqlSessionTemplate -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
+		<constructor-arg index="0" ref="sqlSessionFactory"/>
+	</bean>
+	
+ 	<!-- 事务管理(Spring事务会覆盖JDBC事务) -->
+<!--  	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean> -->
+	
+	<!-- 使用注解管理事务 -->
+	<!-- <tx:annotation-driven transaction-manager="transactionManager"  proxy-target-class="true"/> -->
+	
+	<!-- 采用自动扫描方式创建mapper bean -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com"/>
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+		<property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+	</bean>
+	
+</beans>  

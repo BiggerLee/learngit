@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyAspect {
 	
-	 @Pointcut("execution(* com.xtli.controller.Hello.helloWorld(..))")
+	 @Pointcut("execution(* com.xtli.controller.Spring.Hello.helloWorld(..))")
 	 private void myPointcut(){}
 	 
     /**
